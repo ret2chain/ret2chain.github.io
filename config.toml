@@ -9,6 +9,8 @@ build_search_index = true
 
 theme = "anpu"
 
+title = "ret2chain"
+
 taxonomies = [
     { name = "categories" },
     { name = "tags" },
@@ -24,4 +26,4 @@ highlight_code = true
 # anpu_menu_links = [
 #     { url = "$BASE_URL/about/", name = "About" },
 # ]
-# anpu_date_format = "%e %B %Y"
+anpu_date_format = "%Y-%m-%d"
