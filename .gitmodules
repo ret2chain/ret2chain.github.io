@@ -1,0 +1,3 @@
+[submodule "myblog/themes/anpu"]
+	path = myblog/themes/anpu
+	url = https://github.com/ret2chain/anpu-zola-theme
