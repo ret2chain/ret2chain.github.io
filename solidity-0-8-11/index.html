@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+
+    <title>Solidity 0.8.11 - ret2chain</title>
+    <meta name="description" content="リサーチメモ">
+    <meta property="twitter:card" content="summary" />
+    <meta property="og:title" content="Solidity 0.8.11 - ret2chain" />
+    <meta property="og:description" content="Solidity 0.8.11がリリースされた。主な新機能はLanguage ServerとABIエンコーディングの安全な実行の2つ。" />
+    <meta property="og:image" content="https://ret2chain.github.io/icon.png"/>
+
+    <link rel="icon" type="image/png" href="https://ret2chain.github.io/icon.png">
+    <link rel="stylesheet" href="https://ret2chain.github.io/main.css">
+
+    
+
+    
+    
+</head>
+<body>
+    <a class="skip-main" href="#main">Skip to content</a>
+    <div class="container">
+        <header> 
+            <h1 class="site-header">
+                <a href="https:&#x2F;&#x2F;ret2chain.github.io">ret2chain</a>
+            </h1>
+            <nav>
+                
+                
+                
+            </nav>
+        </header>
+        <main id="main" tabindex="-1">
+            
+
+<article class="post">
+    <header>
+        <h1>Solidity 0.8.11</h1>
+    </header>
+    <div class="content">
+        <p><a href="https://blog.soliditylang.org/2021/12/20/solidity-0.8.11-release-announcement/">Solidity 0.8.11がリリースされた</a>。主な新機能はLanguage ServerとABIエンコーディングの安全な実行の2つ。</p>
+<h2 id="language-server">Language Server</h2>
+<p>Language Serverとは、ソースコードを解析して様々な情報や機能を提供するサーバーのことで、主にIDEやコンパイラなどに自動補完や定義参照などを提供する。Language Server Protocol (LSP)はこのLanguage Serverの開発運用を統一化するプロトコルで、各IDEごとに対して各言語ごとにLanguage Serverを実装するのではなく、全てのIDEに対して一つの言語のLanguage Serverを作ることで相互運用性を高めるものである。</p>
+<p>Solidity 0.8.11では最小限の機能を持つLSPの実装が提供された（<a href="https://github.com/ethereum/solidity/issues/7763">Implement LSP / Language Server · Issue #7763 · ethereum/solidity</a>）。2022年のQ1の間に「定義へのジャンプ」「リネーム」「すべての参照を検索」「カーソルを置いたときのドキュメントの表示」「セマンティックハイライト」などの機能を提供する予定になっている。</p>
+<p>ただしLSPに求められる代表的な機能である自動補完は、不完全なコードの内部でシンボルの検索や型の解決を行わなければならないため実装が複雑であり、機能の提供はまだ先になる予定である。</p>
+<p>現在LSPはnpmなどを使わず直接インストールされたネイティブなSolidityに対してのみ対応している。</p>
+<p>Qt Creatorであれば「Tools」→「Options」→「Language Client」から「Add」をクリックしsolcの実行ファイルへのパスを<code>--lsp</code>オプションでありで追加すれば良い。</p>
+<p>Vim/Neovimであれば<a href="https://github.com/neoclide/coc.nvim">cocプラグイン</a>をインストールし、<code>coc-settings.json</code>に以下を記述する。</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>    </span><span style="color:#65737e;">// ...
+</span><span>    &quot;</span><span style="color:#a3be8c;">languageserver</span><span>&quot;: {
+</span><span>        </span><span style="color:#65737e;">// ...
+</span><span>        &quot;</span><span style="color:#a3be8c;">solidity</span><span>&quot;: {
+</span><span>            &quot;</span><span style="color:#a3be8c;">command</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">/path/to/solc</span><span>&quot;,
+</span><span>            &quot;</span><span style="color:#a3be8c;">args</span><span>&quot;: [ &quot;</span><span style="color:#a3be8c;">--lsp</span><span>&quot; ],
+</span><span>            &quot;</span><span style="color:#a3be8c;">rootPatterns</span><span>&quot;: [&quot;</span><span style="color:#a3be8c;">.git/</span><span>&quot;],
+</span><span>            &quot;</span><span style="color:#a3be8c;">filetypes</span><span>&quot;: [&quot;</span><span style="color:#a3be8c;">solidity</span><span>&quot;]
+</span><span>        }
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>VSCodeであれば現在は<a href="https://dev.to/christianparpart/builtin-solidity-language-server-267n">Builtin Solidity Language Server - DEV Community</a>を使用して試せるのみで、将来的には既存のSolidityプラグインに追加されることが期待される。</p>
+<h2 id="abi-encodecallnozhui-jia"><code>abi.encodeCall</code>の追加</h2>
+<p>引数の型チェックを行うABIエンコードされたファンクションコールデータを返すビルトイン関数<code>abi.encodeCall</code>が追加された。既にある<code>abi.encodeWithSelector</code>関数は、引数の型チェックを行わないもので、<code>abi.encodeCall</code>の登場により安全にコールデータをABIエンコードすることが可能になった。</p>
+
+    </div>
+
+    
+    <div class="article-info">
+        
+        <div class="article-date">2022-01-02</div>
+        
+        <div class="article-taxonomies">
+            
+            
+                <ul class="article-tags">
+                    
+                    <li><a href="https://ret2chain.github.io/tags/solidity/">#Solidity</a></li>
+                    
+                    <li><a href="https://ret2chain.github.io/tags/ethereum/">#Ethereum</a></li>
+                    
+                </ul>
+            
+        </div>
+    </div>
+
+</article>
+
+
+        </main>
+        <footer>
+            <p>
+                © ret2chain 2022<br>
+            </p>
+            <p>
+                
+                
+            </p>
+        </footer>
+    </div>
+</body>
+</html>

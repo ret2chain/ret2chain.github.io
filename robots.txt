@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ret2chain.github.io/sitemap.xml
