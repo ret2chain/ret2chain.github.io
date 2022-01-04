@@ -10,6 +10,7 @@ build_search_index = true
 theme = "anpu"
 
 title = "ret2chain"
+description = "リサーチメモ"
 
 taxonomies = [
     { name = "categories" },
